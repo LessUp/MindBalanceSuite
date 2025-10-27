@@ -1,0 +1,14 @@
+# General
+.DS_Store
+*.log
+node_modules/
+
+# Build outputs
+build/
+dist/
+.out/
+.next/
+
+# Editor
+.vscode/
+.idea/
