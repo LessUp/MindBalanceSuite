@@ -633,11 +633,24 @@ document.addEventListener('DOMContentLoaded',function(){
   function renderResult(total,values){
     const s=currentScale.severity(total);
     const extras=currentScale.extras(total,values);
+    const summaryLines=[
+      `量表：${currentScale.title}`,
+      `时间范围：${currentScale.timeframe}`,
+      `得分：${total} / ${currentScale.max}`,
+      `分级：${s.label}`
+    ];
+    const adviceText=String(s.advice||'').replace(/<[^>]*>/g,'').trim();
+    if(adviceText)summaryLines.push(`建议：${adviceText}`);
+    const summary=summaryLines.join('\n');
     const html=`<div class="result-title">筛查结果</div>
       <div class="score">总分：<strong>${total}</strong> / ${currentScale.max}</div>
       <div class="severity"><span class="badge ${s.badge}">${s.label}</span></div>
       ${extras}
       <div class="advice">${s.advice}</div>
+      <div class="result-actions">
+        <button type="button" class="btn btn-ghost" id="copyResult">复制结果</button>
+        <span class="result-feedback" id="copyFeedback" role="status" aria-live="polite"></span>
+      </div>
       <div class="muted">提示：本工具为自我筛查与健康教育用途，结果仅供参考，不构成医疗诊断或治疗建议。如症状明显或持续，请尽快咨询专业人员。</div>`;
     results.innerHTML=html;
     results.classList.remove('hidden');
@@ -652,6 +665,34 @@ document.addEventListener('DOMContentLoaded',function(){
       values
     });
     renderHistory();
+    const copyBtn=results.querySelector('#copyResult');
+    if(copyBtn){
+      copyBtn.addEventListener('click',()=>{
+        const feedback=results.querySelector('#copyFeedback');
+        function show(msg){ if(feedback){ feedback.textContent=msg; feedback.classList.add('visible'); setTimeout(()=>feedback.classList.remove('visible'),3000); } }
+        const doCopy=text=>{
+          if(navigator.clipboard&&navigator.clipboard.writeText){
+            navigator.clipboard.writeText(text).then(()=>show('已复制到剪贴板'),()=>show('复制失败'));
+          }else{
+            const textarea=document.createElement('textarea');
+            textarea.value=text;
+            textarea.setAttribute('readonly','');
+            textarea.style.position='absolute';
+            textarea.style.left='-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try{
+              const ok=document.execCommand('copy');
+              show(ok?'已复制到剪贴板':'复制失败');
+            }catch(e){
+              show('复制失败');
+            }
+            document.body.removeChild(textarea);
+          }
+        };
+        doCopy(summary);
+      });
+    }
   }
 
   function wireActions(){
@@ -767,6 +808,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="history-header">
         <div class="result-title">历史记录</div>
         <div class="history-tools">
+          <button id="exportHistory" class="btn btn-ghost" type="button">导出 JSON</button>
           <button id="clearHistory" class="btn btn-ghost" type="button">清空历史</button>
           <button id="hideHistory" class="btn btn-ghost" type="button">隐藏</button>
         </div>
@@ -797,5 +839,29 @@ document.addEventListener('DOMContentLoaded',function(){
     if(clearBtn){ clearBtn.addEventListener('click',()=>{ saveJSON(KEY_HISTORY,[]); renderHistory(); }); }
     const hideBtn=historyEl.querySelector('#hideHistory');
     if(hideBtn){ hideBtn.addEventListener('click',()=>{ historyEl.classList.add('hidden'); }); }
+    const exportBtn=historyEl.querySelector('#exportHistory');
+    if(exportBtn){
+      exportBtn.addEventListener('click',()=>{
+        const data=loadJSON(KEY_HISTORY,[]);
+        exportHistory(data);
+      });
+    }
+  }
+
+  function exportHistory(records){
+    if(!records||!records.length){
+      alert('暂无可导出的历史记录');
+      return;
+    }
+    const stamp=new Date().toISOString().replace(/[:T]/g,'-').split('.')[0];
+    const blob=new Blob([JSON.stringify(records,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`mindbalance-history-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 });
