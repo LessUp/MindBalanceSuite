@@ -1,0 +1,20 @@
+# Vercel 部署配置
+vercel.json 文件用于配置 Vercel 部署设置
+
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

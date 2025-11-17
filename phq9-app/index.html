@@ -1,29 +1,13 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>心理健康自评量表中心（PHQ-9 / GAD-7 / PHQ-2）</title>
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
-  <main class="container" id="top">
-    <header class="header">
-      <h1>心理健康自评量表中心</h1>
-      <p class="subtitle">请选择量表并回答（默认 PHQ-9，时间范围：过去两周）</p>
-      <div class="note">
-        本工具用于自我筛查与健康教育，不能替代专业人员的临床诊断或治疗建议。如有明显困扰或功能受损，请尽快咨询精神科或心理健康专业人员。
-      </div>
-      <div class="privacy">所有题目与评分在你的浏览器本地完成，不会上传到任何服务器。</div>
-    </header>
-
-    <section id="app"></section>
-
-    <section id="results" class="hidden" aria-live="polite" aria-atomic="true"></section>
-  
-    <section id="history" class="hidden" aria-live="polite" aria-atomic="true"></section>
-  </main>
-
-  <script src="./app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>心理健康自评量表中心</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
