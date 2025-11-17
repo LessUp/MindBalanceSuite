@@ -217,6 +217,11 @@ npm run deploy
 
 本项目基于 [MIT License](LICENSE) 开源，可自由复用与二次开发。请保留原始版权声明。
 
+## 📚 学术整合与研究基础
+
+- 项目所用量表的原始文献及近年数字心理健康研究的系统整理，见仓库根目录的 `ACADEMIC_INTEGRATION.md`。
+- 相关论文 PDF、技术报告及中文摘要集中存放于 `references/` 目录（需团队成员按数据库授权下载）。
+
 ## 📚 参考文献
 
 - PHQ-9：Kroenke K, Spitzer RL, Williams JBW. J Gen Intern Med. 2001;16(9):606–613.
