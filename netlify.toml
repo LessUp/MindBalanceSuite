@@ -1,16 +1,7 @@
 [build]
-  publish = "phq9-app"
-  command = ""
-
-[[headers]]
-  for = "/app.js"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-[[headers]]
-  for = "/styles.css"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+  base = "phq9-app"
+  publish = "dist"
+  command = "npm run build"
 
 [[headers]]
   for = "/index.html"

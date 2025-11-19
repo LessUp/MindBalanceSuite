@@ -123,6 +123,12 @@ phq9-app/
 └── tsconfig.json           # TypeScript 配置
 ```
 
+## 架构与历史版本说明
+
+- 当前应用的正式实现为基于 **React 18 + TypeScript + Vite** 的 SPA，入口位于 `src/main.tsx`，量表定义集中在 `src/data/scales.ts`。
+- 早期曾有纯 HTML/CSS/JS 版本，已在重构过程中迁移到 React + TypeScript 架构，相关历史实现可以通过 Git 提交记录查阅。
+- 请在 `src/` 目录下进行新功能开发与维护，新增量表也应在 `src/data/scales.ts` 中定义。
+
 ## 🔧 部署
 
 ### Vercel (推荐)

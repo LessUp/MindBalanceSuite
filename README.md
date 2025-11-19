@@ -11,6 +11,12 @@ MindBalance Suite 是一个开源的心理健康自评与科普工具集合，�
 
 具体量表说明、功能详情请参考子项目目录下的 [`phq9-app/README.md`](./phq9-app/README.md)。
 
+## 版本与架构说明
+
+- 当前推荐和实际使用的实现是 `phq9-app/src` 下的 **React 18 + TypeScript + Vite** 架构（入口为 `src/main.tsx`）。
+- 仓库早期存在纯 HTML/CSS/JS 实现，现已通过重构迁移为 React + TypeScript 架构，相关代码可在 Git 历史中查阅（不再参与当前构建与部署）。
+- 新增量表或功能时，请基于 React + TypeScript 版本进行开发。
+
 ## 仓库结构
 
 ```text
