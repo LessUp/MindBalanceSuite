@@ -1,33 +1,50 @@
 .app-container {
   min-height: 100vh;
-  background: var(--bg);
+  background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.08), transparent 25%),
+    radial-gradient(circle at 80% 0%, rgba(124, 58, 237, 0.08), transparent 22%),
+    var(--bg);
   transition: background-color 0.2s ease;
 }
 
 .header {
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border-bottom: 1px solid var(--border);
   padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 50;
   backdrop-filter: blur(8px);
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
 }
 
 .header-content {
-  max-width: 880px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.brand-subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text);
   text-decoration: none;
+  letter-spacing: -0.01em;
 }
 
 .nav-links {
@@ -43,23 +60,43 @@
   border-radius: 0.5rem;
   transition: all 0.2s ease;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .nav-link:hover {
-  background: var(--border);
+  background: color-mix(in srgb, var(--border) 70%, transparent);
   color: var(--primary);
 }
 
 .nav-link.active {
   background: var(--primary);
   color: white;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+}
+
+.subtle-button {
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.header-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
 }
 
 .main-content {
-  max-width: 880px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1.25rem 3rem;
   min-height: calc(100vh - 80px);
+}
+
+.content-surface {
+  position: relative;
+  z-index: 1;
 }
 
 .footer {
@@ -70,7 +107,7 @@
 }
 
 .footer-content {
-  max-width: 880px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 1rem;
   text-align: center;

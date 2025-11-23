@@ -19,55 +19,65 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="app-container">
-      <header className="header">
-        <div className="header-content">
-          <Link to="/" className="logo">
-            心理健康自评中心
-          </Link>
-          
-          <nav className="nav-links">
-            <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
-              <BarChart3 size={16} />
-              量表评估
-            </Link>
-            <Link to="/history" className={`nav-link ${isActive('/history') ? 'active' : ''}`}>
-              <History size={16} />
-              历史记录
-            </Link>
-            {isAuthenticated ? (
-              <>
+        <header className="header">
+          <div className="header-content">
+            <div className="brand">
+              <Link to="/" className="logo">
+                MindBalance 心理自评
+              </Link>
+              <p className="brand-subtitle">从引导到结果，一步步陪伴您的自我评估旅程</p>
+            </div>
+
+            <nav className="nav-links">
+              <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+                <BarChart3 size={16} />
+                量表评估
+              </Link>
+              <Link to="/history" className={`nav-link ${isActive('/history') ? 'active' : ''}`}>
+                <History size={16} />
+                历史记录
+              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link to="/account" className={`nav-link ${isActive('/account') ? 'active' : ''}`}>
+                    <User size={16} />
+                    {user?.name}
+                  </Link>
+                  <button onClick={logout} className="nav-link subtle-button">
+                    退出
+                  </button>
+                </>
+              ) : (
                 <Link to="/account" className={`nav-link ${isActive('/account') ? 'active' : ''}`}>
                   <User size={16} />
-                  {user?.name}
+                  账户
                 </Link>
-                <button onClick={logout} className="nav-link">
-                  退出
-                </button>
-              </>
-            ) : (
-              <Link to="/account" className={`nav-link ${isActive('/account') ? 'active' : ''}`}>
-                <User size={16} />
-                账户
-              </Link>
-            )}
-            <button onClick={toggleTheme} className="theme-toggle" title={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}>
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
-          </nav>
-        </div>
-      </header>
+              )}
+              <div className="header-divider" />
+              <button
+                onClick={toggleTheme}
+                className="theme-toggle"
+                title={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}
+              >
+                {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+              </button>
+            </nav>
+          </div>
+        </header>
 
-      <main className="main-content">
-        {children}
-      </main>
+        <main className="main-content">
+          <div className="content-surface">
+            {children}
+          </div>
+        </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <p>本工具用于自我筛查与健康教育，不能替代专业人员的临床诊断或治疗建议。</p>
-          <p>如有明显困扰或功能受损，请尽快咨询精神科或心理健康专业人员。</p>
-          <p>&copy; 2024 心理健康自评中心. 保留所有权利.</p>
-        </div>
-      </footer>
-    </div>
+        <footer className="footer">
+          <div className="footer-content">
+            <p>本工具用于自我筛查与健康教育，不能替代专业人员的临床诊断或治疗建议。</p>
+            <p>如有明显困扰或功能受损，请尽快咨询精神科或心理健康专业人员。</p>
+            <p>&copy; 2024 心理健康自评中心. 保留所有权利.</p>
+          </div>
+        </footer>
+      </div>
   )
 }
