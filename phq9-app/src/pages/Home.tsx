@@ -8,14 +8,14 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 }
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
+  show: { opacity: 1, y: 0 },
 }
 
 export default function Home() {
@@ -64,11 +64,14 @@ export default function Home() {
           className="flex flex-wrap justify-center gap-4 md:gap-8"
         >
           {[
-            { icon: Shield, text: "隐私保护" },
-            { icon: Heart, text: "专业可靠" },
-            { icon: BarChart3, text: "科学评估" }
+            { icon: Shield, text: '隐私保护' },
+            { icon: Heart, text: '专业可靠' },
+            { icon: BarChart3, text: '科学评估' },
           ].map((feat, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+            <div
+              key={i}
+              className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+            >
               <feat.icon className="w-4 h-4" />
               <span>{feat.text}</span>
             </div>
@@ -119,7 +122,7 @@ export default function Home() {
           variants={container}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: '-50px' }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {Object.values(scales).map((scale) => (
@@ -143,35 +146,40 @@ export default function Home() {
           {[
             {
               icon: BarChart3,
-              color: "text-blue-600 dark:text-blue-400",
-              bg: "bg-blue-50 dark:bg-blue-900/20",
-              title: "多维度评估",
-              desc: "涵盖抑郁、焦虑、压力、睡眠等多个心理健康维度"
+              color: 'text-blue-600 dark:text-blue-400',
+              bg: 'bg-blue-50 dark:bg-blue-900/20',
+              title: '多维度评估',
+              desc: '涵盖抑郁、焦虑、压力、睡眠等多个心理健康维度',
             },
             {
               icon: Shield,
-              color: "text-green-600 dark:text-green-400",
-              bg: "bg-green-50 dark:bg-green-900/20",
-              title: "隐私至上",
-              desc: "所有测评数据仅保存在您的本地浏览器中"
+              color: 'text-green-600 dark:text-green-400',
+              bg: 'bg-green-50 dark:bg-green-900/20',
+              title: '隐私至上',
+              desc: '所有测评数据仅保存在您的本地浏览器中',
             },
             {
               icon: History,
-              color: "text-purple-600 dark:text-purple-400",
-              bg: "bg-purple-50 dark:bg-purple-900/20",
-              title: "历程追踪",
-              desc: "自动记录测评历史，可视化展示心理状态变化"
+              color: 'text-purple-600 dark:text-purple-400',
+              bg: 'bg-purple-50 dark:bg-purple-900/20',
+              title: '历程追踪',
+              desc: '自动记录测评历史，可视化展示心理状态变化',
             },
             {
               icon: Brain,
-              color: "text-rose-600 dark:text-rose-400",
-              bg: "bg-rose-50 dark:bg-rose-900/20",
-              title: "专业建议",
-              desc: "基于测评结果提供针对性的自助建议与指导"
-            }
+              color: 'text-rose-600 dark:text-rose-400',
+              bg: 'bg-rose-50 dark:bg-rose-900/20',
+              title: '专业建议',
+              desc: '基于测评结果提供针对性的自助建议与指导',
+            },
           ].map((feature, i) => (
-            <div key={i} className="text-center space-y-4 group p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-              <div className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center ${feature.bg} transition-transform group-hover:scale-110 duration-300`}>
+            <div
+              key={i}
+              className="text-center space-y-4 group p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+            >
+              <div
+                className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center ${feature.bg} transition-transform group-hover:scale-110 duration-300`}
+              >
                 <feature.icon className={`w-7 h-7 ${feature.color}`} />
               </div>
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">
@@ -201,7 +209,7 @@ function getScaleDescription(scaleId: string): string {
     k10: '广泛使用的心理困扰量表，评估整体心理健康状况与痛苦程度。',
     who5: '关注积极心理状态，评估您的主观幸福感与生活质量。',
     gad2: '快速焦虑筛查工具，用于初步评估焦虑倾向。',
-    auditc: '简版酒精筛查，快速了解饮酒行为是否存在健康风险。'
+    auditc: '简版酒精筛查，快速了解饮酒行为是否存在健康风险。',
   }
   return descriptions[scaleId] || '专业心理健康评估工具，助您了解内心世界。'
 }

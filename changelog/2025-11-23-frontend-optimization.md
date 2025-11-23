@@ -19,3 +19,6 @@
 - Updated `tailwind.config.js` to support CSS variables for theming.
 - Updated `index.css` with improved global styles and CSS variables for light/dark modes.
 - Removed custom CSS from `App.css` in favor of Tailwind utility classes.
+
+### Fixed
+- Resolved merge conflicts in `App.css`, `Layout.tsx`, and `Home.tsx` by keeping the Tailwind-based implementations and removing legacy layout/styles.
