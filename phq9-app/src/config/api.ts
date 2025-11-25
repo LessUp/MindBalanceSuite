@@ -20,8 +20,8 @@ export interface AIProviderConfig {
 
 // 默认后端配置（当前为本地模式）
 export const backendConfig: BackendConfig = {
-  enabled: false, // 设为 true 启用后端服务
-  baseUrl: (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:3001',
+  enabled: import.meta.env.VITE_BACKEND_ENABLED === 'true', // 通过环境变量控制
+  baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001',
   apiVersion: 'v1',
   timeout: 30000
 }
