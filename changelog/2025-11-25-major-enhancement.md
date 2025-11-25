@@ -95,9 +95,58 @@
 - Brown, K.W., & Ryan, R.M. (2003). MAAS. Journal of Personality and Social Psychology.
 - McCullough, M.E., et al. (2002). GQ-6. Journal of Personality and Social Psychology.
 
+## 第二阶段更新
+
+### 新增功能
+
+#### 1. 数据可视化图表
+- **评估趋势图** - 展示历史评估得分变化
+- **量表分布饼图** - 显示各量表使用比例
+- **心情趋势图** - 可视化心情变化
+- **统计卡片** - 关键数据一目了然
+- **进度环** - 直观展示完成度
+
+#### 2. 心情追踪日历
+- 月度日历视图
+- 表情符号快速记录
+- 月度统计汇总
+- 历史心情浏览
+
+#### 3. 增强历史记录页面
+- 列表/图表/日历三种视图
+- 时间范围筛选（周/月/全部）
+- 量表类型筛选
+- 统计数据面板
+
+#### 4. 登录/注册UI
+- 美观的模态框设计
+- 支持本地模式和后端模式
+- 云端同步状态指示
+
+#### 5. AI解读组件
+- 可折叠的解读面板
+- 关键洞察展示
+- 改善建议列表
+- 安全警告提示
+
+#### 6. 数据导出功能
+- JSON 完整数据导出
+- CSV 表格导出
+- PDF 报告生成（打印）
+
+### 新增文件
+- `src/components/Charts.tsx` - 图表组件库
+- `src/components/MoodCalendar.tsx` - 心情日历
+- `src/components/AuthModal.tsx` - 登录注册模态框
+- `src/components/AIInterpretation.tsx` - AI解读组件
+- `src/utils/exportData.ts` - 数据导出工具
+
+### 依赖更新
+- 新增 `recharts` - 图表库
+
 ## 待办事项
 - [ ] 添加更多量表（BDI-II、PCL-5 等）
-- [ ] 实现数据可视化图表
-- [ ] 添加导出 PDF 报告功能
 - [ ] 多语言支持
 - [ ] PWA 离线支持
+- [ ] 提醒功能
+- [ ] 数据备份恢复
