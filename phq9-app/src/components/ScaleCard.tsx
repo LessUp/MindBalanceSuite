@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Clock, HelpCircle } from 'lucide-react'
+import { ArrowRight, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Scale } from '../data/scales'
 

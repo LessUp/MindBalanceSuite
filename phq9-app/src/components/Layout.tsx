@@ -1,4 +1,4 @@
-import { Sun, Moon, User, BarChart3, History, Menu, X } from 'lucide-react'
+import { Sun, Moon, User, BarChart3, History, Menu, X, Gamepad2, BookOpen } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useThemeStore } from '../stores/themeStore'
 import { useAuthStore } from '../stores/authStore'
@@ -20,6 +20,8 @@ export default function Layout({ children }: LayoutProps) {
 
   const navLinks = [
     { path: '/', label: '量表评估', icon: BarChart3 },
+    { path: '/games', label: '心理游戏', icon: Gamepad2 },
+    { path: '/knowledge', label: '科普知识', icon: BookOpen },
     { path: '/history', label: '历史记录', icon: History },
     { path: '/account', label: isAuthenticated ? user?.name || '账户' : '账户', icon: User },
   ]

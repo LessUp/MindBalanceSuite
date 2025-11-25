@@ -1,5 +1,6 @@
-import { scales } from '../data/scales'
-import { BarChart3, Shield, Heart, Brain, History } from 'lucide-react'
+import { allScales, scaleCategories } from '../data/scales'
+import { BarChart3, Shield, Heart, Brain, Sparkles, History } from 'lucide-react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ScaleCard from '../components/ScaleCard'
 
@@ -19,6 +20,22 @@ const item = {
 }
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
+  const categoryInfo: Record<string, { icon: typeof Heart; color: string; bg: string }> = {
+    core: { icon: Brain, color: 'text-primary-600', bg: 'bg-primary-50 dark:bg-primary-900/20' },
+    quickScreen: { icon: Sparkles, color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
+    specific: { icon: Heart, color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-rose-900/20' },
+    positive: { icon: Shield, color: 'text-green-600', bg: 'bg-green-50 dark:bg-green-900/20' }
+  }
+
+  const getFilteredScales = () => {
+    if (!selectedCategory) return Object.values(allScales)
+    const cat = scaleCategories[selectedCategory as keyof typeof scaleCategories]
+    if (!cat) return Object.values(allScales)
+    return cat.scales.map(id => allScales[id]).filter(Boolean)
+  }
+
   return (
     <div className="space-y-16 pb-12">
       {/* Hero Section */}
@@ -106,15 +123,50 @@ export default function Home() {
         </div>
       </motion.div>
 
+      {/* Category Filter */}
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3 px-2">
+          <div className="h-8 w-1 bg-primary-600 rounded-full" />
+          量表分类
+        </h2>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Object.entries(scaleCategories).map(([key, cat]) => {
+            const info = categoryInfo[key] || categoryInfo.core
+            const Icon = info.icon
+            const isSelected = selectedCategory === key
+            
+            return (
+              <button
+                key={key}
+                onClick={() => setSelectedCategory(isSelected ? null : key)}
+                className={`p-4 rounded-xl text-left transition-all border-2 ${
+                  isSelected 
+                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' 
+                    : 'border-transparent bg-white dark:bg-gray-800 hover:border-gray-200 dark:hover:border-gray-700'
+                }`}
+              >
+                <div className={`p-2 rounded-lg ${info.bg} inline-block mb-2`}>
+                  <Icon className={`w-5 h-5 ${info.color}`} />
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">{cat.name}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{cat.description}</p>
+                <p className="text-xs text-primary-600 dark:text-primary-400 mt-2">{cat.scales.length} 个量表</p>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Scales Grid */}
       <div className="space-y-10">
         <div className="flex items-center justify-between px-2">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
             <div className="h-8 w-1 bg-primary-600 rounded-full" />
-            精选量表
+            {selectedCategory ? scaleCategories[selectedCategory as keyof typeof scaleCategories]?.name : '全部量表'}
           </h2>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            共 {Object.keys(scales).length} 个量表
+            共 {getFilteredScales().length} 个量表
           </span>
         </div>
         
@@ -125,7 +177,7 @@ export default function Home() {
           viewport={{ once: true, margin: '-50px' }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {Object.values(scales).map((scale) => (
+          {getFilteredScales().map((scale) => (
             <motion.div key={scale.id} variants={item}>
               <ScaleCard 
                 scale={scale} 
@@ -210,6 +262,13 @@ function getScaleDescription(scaleId: string): string {
     who5: '关注积极心理状态，评估您的主观幸福感与生活质量。',
     gad2: '快速焦虑筛查工具，用于初步评估焦虑倾向。',
     auditc: '简版酒精筛查，快速了解饮酒行为是否存在健康风险。',
+    // 扩展量表描述
+    rses: '评估自我价值感和自信水平，了解您对自己的整体看法。',
+    cdrisc: '测量心理韧性，评估您面对逆境时的恢复能力。',
+    swls: '评估生活满意度，反映您对生活整体质量的主观感受。',
+    spin: '评估社交焦虑水平，了解您在社交场合的舒适程度。',
+    maas: '评估正念觉察能力，了解您活在当下的程度。',
+    gq6: '评估感恩倾向，了解您对生活美好事物的欣赏程度。',
   }
   return descriptions[scaleId] || '专业心理健康评估工具，助您了解内心世界。'
 }
