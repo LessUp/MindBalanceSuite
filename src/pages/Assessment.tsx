@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, RotateCcw, Printer, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, RotateCcw, Printer, AlertTriangle, CheckCircle2, Brain } from 'lucide-react'
 import { scales, Scale } from '../data/scales'
-import { useAnswerStore } from '../stores/answerStore'
+import { useAnswerStore, type AnswerValue } from '../stores/answerStore'
 import { useAssessmentStore } from '../stores/assessmentStore'
 import { useAuthStore } from '../stores/authStore'
 import { cn } from '../lib/utils'
@@ -12,7 +12,7 @@ import { cn } from '../lib/utils'
 export default function Assessment() {
   const { scaleId } = useParams<{ scaleId: string }>()
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<number[]>([])
+  const [answers, setAnswers] = useState<AnswerValue[]>([])
   const [showResults, setShowResults] = useState(false)
   const [result, setResult] = useState<{
     total: number
@@ -33,12 +33,11 @@ export default function Assessment() {
       // If all questions are answered, we could potentially show results or jump to end,
       // but for now let's just load them.
       // Find first unanswered question to resume
-      const firstUnanswered = savedAnswers.findIndex(a => a === undefined)
+      const firstUnanswered = savedAnswers.findIndex(a => a == null)
       if (firstUnanswered !== -1) {
         setCurrentQuestion(firstUnanswered)
-      } else if (savedAnswers.length === scale.questions.length && savedAnswers.length > 0) {
-        // If fully answered, go to last question or stay at 0? 
-        // Let's stay at 0 or user can navigate.
+      } else if (savedAnswers.length < scale.questions.length) {
+        setCurrentQuestion(Math.min(savedAnswers.length, scale.questions.length - 1))
       }
     }
   }, [scale, getAnswers])
@@ -81,14 +80,15 @@ export default function Assessment() {
   }
 
   const handleSubmit = () => {
-    if (answers.length !== scale.questions.length || answers.some(a => a === undefined)) {
+    if (answers.length !== scale.questions.length || answers.some(a => a == null)) {
       toast.error('请完成所有题目')
       return
     }
 
-    const total = scale.computeTotal ? scale.computeTotal(answers) : answers.reduce((a, b) => a + b, 0)
-    const severity = scale.severity(total, answers)
-    const extras = scale.extras ? scale.extras(total, answers) : ''
+    const values = answers.map((a) => a ?? 0)
+    const total = scale.computeTotal ? scale.computeTotal(values) : values.reduce((a, b) => a + b, 0)
+    const severity = scale.severity(total, values)
+    const extras = scale.extras ? scale.extras(total, values) : ''
 
     setResult({ total, severity, extras })
     setShowResults(true)
@@ -100,7 +100,7 @@ export default function Assessment() {
         total,
         max: scale.max,
         label: severity.label,
-        values: answers
+        values
       })
       toast.success('评估结果已保存')
     }
@@ -117,7 +117,7 @@ export default function Assessment() {
     }
   }
 
-  const progress = (answers.filter(a => a !== undefined).length / scale.questions.length) * 100
+  const progress = (answers.filter(a => a != null).length / scale.questions.length) * 100
   const currentOptions = scale.questionOptions ? scale.questionOptions[currentQuestion] : scale.options
 
   // Results View
@@ -337,7 +337,7 @@ export default function Assessment() {
             {currentQuestion === scale.questions.length - 1 ? (
                 <button
                     onClick={handleSubmit}
-                    disabled={answers[currentQuestion] === undefined}
+                    disabled={answers[currentQuestion] == null}
                     className="flex-1 md:flex-none px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-bold rounded-lg shadow-lg shadow-primary-600/20 transition-all transform active:scale-95"
                 >
                     查看结果
@@ -345,7 +345,7 @@ export default function Assessment() {
             ) : (
                 <button
                     onClick={() => setCurrentQuestion(p => Math.min(scale.questions.length - 1, p + 1))}
-                    disabled={answers[currentQuestion] === undefined}
+                    disabled={answers[currentQuestion] == null}
                     className="flex-1 md:flex-none px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-500 font-bold rounded-lg transition-all hover:shadow-lg active:scale-95 flex items-center justify-center gap-2"
                 >
                     下一题

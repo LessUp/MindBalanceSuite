@@ -1,10 +1,12 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type AnswerValue = number | null
+
 interface AnswerState {
-  answers: Record<string, number[]>
+  answers: Record<string, AnswerValue[]>
   setAnswer: (scaleId: string, questionIndex: number, value: number) => void
-  getAnswers: (scaleId: string) => number[]
+  getAnswers: (scaleId: string) => AnswerValue[]
   clearAnswers: (scaleId: string) => void
   clearAllAnswers: () => void
 }
@@ -14,16 +16,21 @@ export const useAnswerStore = create<AnswerState>()(
     (set, get) => ({
       answers: {},
       setAnswer: (scaleId: string, questionIndex: number, value: number) => {
-        set((state) => ({
-          answers: {
-            ...state.answers,
-            [scaleId]: [
-              ...(state.answers[scaleId] || []),
-              ...Array(questionIndex - (state.answers[scaleId]?.length || 0)).fill(null),
-              value
-            ]
+        set((state) => {
+          const next = state.answers[scaleId] ? [...state.answers[scaleId]] : []
+          const missing = questionIndex - next.length
+          if (missing >= 0) {
+            next.push(...Array(missing + 1).fill(null))
           }
-        }))
+          next[questionIndex] = value
+
+          return {
+            answers: {
+              ...state.answers,
+              [scaleId]: next
+            }
+          }
+        })
       },
       getAnswers: (scaleId: string) => {
         return get().answers[scaleId] || []
