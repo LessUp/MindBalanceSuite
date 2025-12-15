@@ -498,3 +498,15 @@ export const scales: Record<string, Scale> = {
     extras: () => '<div class="muted">注：常见阳性界值为男性≥4、女性≥3，但需结合个人情况与专业判断。</div>'
   }
 }
+
+// 导入扩展量表
+import { extendedScales, scaleCategories } from './extendedScales'
+
+// 合并所有量表
+export const allScales: Record<string, Scale> = {
+  ...scales,
+  ...extendedScales
+}
+
+// 导出分类
+export { scaleCategories }

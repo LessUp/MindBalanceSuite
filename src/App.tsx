@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import Assessment from './pages/Assessment'
 import History from './pages/History'
 import Account from './pages/Account'
+import Games from './pages/Games'
+import Knowledge from './pages/Knowledge'
 import './App.css'
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
             <Route path="/assessment/:scaleId" element={<Assessment />} />
             <Route path="/history" element={<History />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/knowledge" element={<Knowledge />} />
           </Routes>
         </Layout>
         <Toaster position="top-center" />

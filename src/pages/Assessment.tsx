@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, RotateCcw, Printer, AlertTriangle, CheckCircle2, Brain } from 'lucide-react'
-import { scales, Scale } from '../data/scales'
+import { allScales, Scale } from '../data/scales'
 import { useAnswerStore, type AnswerValue } from '../stores/answerStore'
 import { useAssessmentStore } from '../stores/assessmentStore'
 import { useAuthStore } from '../stores/authStore'
@@ -24,7 +24,7 @@ export default function Assessment() {
   const { addResult } = useAssessmentStore()
   const { isAuthenticated } = useAuthStore()
 
-  const scale = scaleId ? scales[scaleId] : null
+  const scale = scaleId ? allScales[scaleId] : null
 
   useEffect(() => {
     if (scale) {
