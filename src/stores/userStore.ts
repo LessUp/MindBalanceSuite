@@ -74,7 +74,11 @@ interface UserState {
   
   // Mood Tracking
   addMoodEntry: (mood: number, note?: string, tags?: string[]) => void
+  setMoodEntry: (date: string, mood: number, note?: string, tags?: string[]) => void
   getMoodHistory: (days: number) => MoodEntry[]
+
+  importMoodEntries: (entries: MoodEntry[]) => void
+  importGratitudeEntries: (entries: GratitudeEntry[]) => void
   
   // Reset
   resetUser: () => void
@@ -194,11 +198,15 @@ export const useUserStore = create<UserState>()(
       
       addMoodEntry: (mood, note, tags) => {
         const today = new Date().toISOString().split('T')[0]
-        const entry: MoodEntry = { date: today, mood, note, tags }
-        
+        get().setMoodEntry(today, mood, note, tags)
+      },
+
+      setMoodEntry: (date, mood, note, tags) => {
+        const day = String(date).slice(0, 10)
+        const entry: MoodEntry = { date: day, mood, note, tags }
+
         set((state) => {
-          // 如果今天已有记录，更新它
-          const existingIndex = state.moodEntries.findIndex(e => e.date === today)
+          const existingIndex = state.moodEntries.findIndex(e => e.date === day)
           if (existingIndex >= 0) {
             const updated = [...state.moodEntries]
             updated[existingIndex] = entry
@@ -213,6 +221,30 @@ export const useUserStore = create<UserState>()(
         const cutoff = new Date()
         cutoff.setDate(cutoff.getDate() - days)
         return state.moodEntries.filter(e => new Date(e.date) >= cutoff)
+      },
+
+      importMoodEntries: (entries) => {
+        set((state) => {
+          const map = new Map<string, MoodEntry>()
+          for (const m of state.moodEntries) map.set(m.date, m)
+          for (const m of entries) map.set(m.date, m)
+          const merged = Array.from(map.values())
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .slice(0, 365)
+          return { moodEntries: merged }
+        })
+      },
+
+      importGratitudeEntries: (entries) => {
+        set((state) => {
+          const map = new Map<string, GratitudeEntry>()
+          for (const g of state.gratitudeEntries) map.set(g.id, g)
+          for (const g of entries) map.set(g.id, g)
+          const merged = Array.from(map.values())
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .slice(0, 365)
+          return { gratitudeEntries: merged }
+        })
       },
       
       resetUser: () => set({

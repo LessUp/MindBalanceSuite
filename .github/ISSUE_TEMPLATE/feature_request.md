@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: 提出新功能或改进建议（MindBalance Suite / phq9-app）
+about: 提出新功能或改进建议（MindBalance Suite）
 labels: enhancement
 ---
 

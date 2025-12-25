@@ -1,5 +1,5 @@
 [build]
-  base = "phq9-app"
+  base = "."
   publish = "dist"
   command = "npm run build"
 

@@ -26,7 +26,7 @@ export default function MoodCalendar({ onSelectDate }: MoodCalendarProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [showMoodPicker, setShowMoodPicker] = useState(false)
   
-  const { moodEntries, addMoodEntry } = useUserStore()
+  const { moodEntries, setMoodEntry } = useUserStore()
 
   const moodMap = useMemo(() => {
     const map = new Map<string, number>()
@@ -61,9 +61,9 @@ export default function MoodCalendar({ onSelectDate }: MoodCalendarProps) {
 
   const handleMoodSelect = (mood: number) => {
     if (selectedDate) {
-      addMoodEntry(mood, undefined, undefined)
-      // 由于 addMoodEntry 使用今天的日期，我们需要一个特殊处理
-      // 这里简化为只能记录今天的心情
+      setMoodEntry(selectedDate, mood)
+      // 通过 setMoodEntry 写入选中日期，避免仅能记录“今天”的限制
+      // 这里先不收集备注/标签（如需可扩展为弹窗输入）
     }
     setShowMoodPicker(false)
   }

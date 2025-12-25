@@ -8,6 +8,12 @@ import { useUserStore } from '../stores/userStore'
 import * as api from './apiClient'
 import { toast } from 'sonner'
 
+function toTimestamp(iso: string | undefined): number {
+  if (!iso) return Date.now()
+  const ms = Date.parse(iso)
+  return Number.isFinite(ms) ? ms : Date.now()
+}
+
 export interface SyncStatus {
   lastSyncTime: string | null
   pendingUploads: number
@@ -89,44 +95,40 @@ export async function downloadCloudData(): Promise<void> {
 
   try {
     const cloudData = await api.downloadData()
-    
-    // 合并评估数据
-    const assessmentStore = useAssessmentStore.getState()
-    const existingIds = new Set(assessmentStore.results.map(r => r.id))
-    
-    for (const assessment of cloudData.assessments) {
-      if (!existingIds.has(assessment.id)) {
-        // 使用标准 addResult，id 和 timestamp 会自动生成
-        assessmentStore.addResult({
-          scaleId: assessment.scale_id,
-          scaleTitle: assessment.scale_title,
-          total: assessment.total,
-          max: assessment.max,
-          label: assessment.label,
-          values: assessment.values
-        })
-      }
-    }
 
-    // 合并心情数据
+    // 合并评估数据（保留云端 id/时间）
+    const assessmentStore = useAssessmentStore.getState()
+    assessmentStore.importResults(
+      cloudData.assessments.map((a) => ({
+        id: a.id,
+        scaleId: a.scale_id,
+        scaleTitle: a.scale_title,
+        total: a.total,
+        max: a.max,
+        label: a.label,
+        values: a.values,
+        timestamp: toTimestamp(a.created_at)
+      }))
+    )
+
+    // 合并心情数据（按日期写入）
     const userStore = useUserStore.getState()
-    const existingMoodDates = new Set(userStore.moodEntries.map(m => m.date))
-    
-    for (const mood of cloudData.moodEntries) {
-      if (!existingMoodDates.has(mood.date)) {
-        userStore.addMoodEntry(mood.mood, mood.note || undefined)
-      }
-    }
+    userStore.importMoodEntries(
+      cloudData.moodEntries.map((m) => ({
+        date: m.date,
+        mood: m.mood,
+        note: m.note || undefined
+      }))
+    )
 
     // 合并感恩数据
-    const existingGratitudeIds = new Set(userStore.gratitudeEntries.map(g => g.id))
-    
-    for (const gratitude of cloudData.gratitudeEntries) {
-      if (!existingGratitudeIds.has(gratitude.id)) {
-        // 直接添加到 store（需要一个特殊方法）
-        // 这里简化处理，实际可以扩展 store
-      }
-    }
+    userStore.importGratitudeEntries(
+      cloudData.gratitudeEntries.map((g) => ({
+        id: g.id,
+        content: g.content,
+        date: g.created_at
+      }))
+    )
 
     updateSyncStatus({
       lastSyncTime: new Date().toISOString(),

@@ -4,16 +4,16 @@
 
 ## 项目简介
 
-MindBalance Suite 是一个开源的心理健康自评与科普工具集合，目前包含基于 React + TypeScript 的 Web 应用 `phq9-app`，集成多种常用心理健康量表（如 PHQ-9、GAD-7、WHO-5、PSS-10、DASS-21 等），用于健康教育与自我筛查。
+MindBalance Suite 是一个开源的心理健康自评与科普工具集合，提供基于 React + TypeScript 的 Web 应用，集成多种常用心理健康量表（如 PHQ-9、GAD-7、WHO-5、PSS-10、DASS-21 等），用于健康教育与自我筛查。
 
 - 本项目不保存或上传任何个人隐私数据，仅在本地浏览器中处理。
 - 评估结果仅供参考，不构成医疗诊断或治疗建议。
 
-具体量表说明、功能详情请参考子项目目录下的 [`phq9-app/README.md`](./phq9-app/README.md)。
+具体量表说明、功能详情请参考本仓库根目录的源码与页面。
 
 ## 版本与架构说明
 
-- 当前推荐和实际使用的实现是 `phq9-app/src` 下的 **React 18 + TypeScript + Vite** 架构（入口为 `src/main.tsx`）。
+- 当前推荐和实际使用的实现是仓库根目录 `src/` 下的 **React 18 + TypeScript + Vite** 架构（入口为 `src/main.tsx`）。
 - 仓库早期存在纯 HTML/CSS/JS 实现，现已通过重构迁移为 React + TypeScript 架构，相关代码可在 Git 历史中查阅（不再参与当前构建与部署）。
 - 新增量表或功能时，请基于 React + TypeScript 版本进行开发。
 
@@ -21,7 +21,9 @@ MindBalance Suite 是一个开源的心理健康自评与科普工具集合，�
 
 ```text
 MindBalanceSuite/
-├── phq9-app/            # 前端 Web 应用：心理健康自评量表中心
+├── src/                 # 前端 Web 应用：心理健康自评量表中心（React + TS）
+├── backend/             # 可选后端服务（Express + SQLite + JWT，用于登录/云同步）
+├── changelog/           # 变更记录
 ├── LICENSE              # MIT 开源协议
 ├── CONTRIBUTING.md      # 贡献指南
 ├── CODE_OF_CONDUCT.md   # 行为准则
@@ -36,13 +38,10 @@ MindBalanceSuite/
 - Node.js ≥ 18
 - pnpm 或 npm
 
-### 本地运行 `phq9-app`
+### 本地运行（前端）
 
 ```bash
-# 进入子项目目录
-cd phq9-app
-
-# 安装依赖（推荐使用 pnpm）
+# 在仓库根目录安装依赖
 pnpm install    # 或 npm install
 
 # 启动开发服务器
@@ -64,7 +63,7 @@ pnpm lint       # 或 npm run lint
 pnpm typecheck  # 或 npm run typecheck
 ```
 
-更多技术细节与项目结构说明，请查看 [`phq9-app/README.md`](./phq9-app/README.md) 中的相关章节。
+更多技术细节与项目结构说明，请查看仓库内相关文档与源码。
 
 ## 部署
 
@@ -73,7 +72,7 @@ pnpm typecheck  # 或 npm run typecheck
 - Netlify / Vercel 等静态托管服务
 - GitHub Pages 或其他支持静态网站的服务
 
-具体子项目部署步骤（包括 Vercel / Netlify / GitHub Pages 示例）请查看 [`phq9-app/README.md`](./phq9-app/README.md) 中的「部署」章节。
+部署使用根目录配置（如 `netlify.toml` / `vercel.json`）即可。
 
 ## 隐私与合规声明
 
@@ -108,7 +107,7 @@ pnpm typecheck  # 或 npm run typecheck
 ## English Summary
 
 **MindBalance Suite** is an open-source toolkit for mental-health self-assessment and education.
-The main module `phq9-app` is a React + TypeScript web application that integrates multiple validated scales (e.g. PHQ-9, GAD-7, WHO-5, PSS-10, DASS-21).
+It is a React + TypeScript web application that integrates multiple validated scales (e.g. PHQ-9, GAD-7, WHO-5, PSS-10, DASS-21).
 
 - All data are processed and stored locally in the browser.
 - Results are for self-screening and education only and must not be used as a clinical diagnosis or treatment advice.
@@ -116,12 +115,11 @@ The main module `phq9-app` is a React + TypeScript web application that integrat
 ### Quick start
 
 ```bash
-cd phq9-app
 pnpm install   # or npm install
 pnpm dev       # or npm run dev
 ```
 
-For more details about features, tech stack, deployment and academic references, see [`phq9-app/README.md`](./phq9-app/README.md).
+For more details about features, tech stack and deployment, see the repo docs and source code.
 
 ### License
 
